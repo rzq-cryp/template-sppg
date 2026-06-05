@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Laporan SPPG</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 { text-align: center; color: #333; }
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .form-section, .output-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            flex: 1;
+        }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #444; font-size: 14px;}
+        input[type="text"], input[type="number"], input[type="date"], textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .gizi-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        button:hover { background-color: #218838; }
+        .btn-danger { background-color: #dc3545; padding: 8px 10px; margin-top: 0; }
+        .btn-danger:hover { background-color: #c82333; }
+        .btn-sm { padding: 5px 10px; font-size: 12px; }
+        .btn-primary { background-color: #007bff; width: 100%; margin-top: 20px; font-size: 16px; padding: 12px;}
+        .btn-primary:hover { background-color: #0069d9; }
+        .btn-secondary { background-color: #6c757d; font-size: 12px; padding: 5px 10px; }
+        .btn-secondary:hover { background-color: #5a6268; }
+        .school-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
+        .school-row input[type="text"] { flex: 2; }
+        .school-row input[type="number"] { flex: 1; }
+        textarea#hasilLaporan {
+            height: 600px;
+            font-family: monospace;
+            font-size: 14px;
+            resize: vertical;
+        }
+        h3 { border-bottom: 2px solid #eee; padding-bottom: 5px; margin-top: 25px; }
+        
+        .gizi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+            margin-top: 25px;
+        }
+        .gizi-header h3 {
+            margin: 0;
+            border: none;
+            padding: 0;
+        }
+        .info-textarea {
+            font-size: 11px;
+            color: #777;
+            margin-top: 2px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Generator Template Laporan SPPG</h2>
+
+    <div class="container">
+        <div class="form-section">
+            <div class="form-group">
+                <label>Tanggal Kegiatan</label>
+                <input type="date" id="inputTanggal" onchange="generateReport()">
+            </div>
+
+            <h3>Daftar Penerima Manfaat</h3>
+            <div id="schoolList">
+                <div class="school-row">
+                    <input type="text" class="namaSekolah" value="SMK Pro-Skill" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <button class="btn-danger" onclick="removeRow(this)">X</button>
+                </div>
+                <div class="school-row">
+                    <input type="text" class="namaSekolah" value="SMA AL HUDA" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <button class="btn-danger" onclick="removeRow(this)">X</button>
+                </div>
+                <div class="school-row">
+                    <input type="text" class="namaSekolah" value="SMK AL HUDA" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <button class="btn-danger" onclick="removeRow(this)">X</button>
+                </div>
+                <div class="school-row">
+                    <input type="text" class="namaSekolah" value="SMK Muhammadiyah" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <button class="btn-danger" onclick="removeRow(this)">X</button>
+                </div>
+                <div class="school-row">
+                    <input type="text" class="namaSekolah" value="MTS AL HUDA" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <button class="btn-danger" onclick="removeRow(this)">X</button>
+                </div>
+                <div class="school-row">
+                    <input type="text" class="namaSekolah" value="SMP Muhammadiyah" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <button class="btn-danger" onclick="removeRow(this)">X</button>
+                </div>
+                <div class="school-row">
+                    <input type="text" class="namaSekolah" value="SD Muhammadiyah" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <button class="btn-danger" onclick="removeRow(this)">X</button>
+                </div>
+                <div class="school-row">
+                    <input type="text" class="namaSekolah" value="Posyandu Mutiara Bunda" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <button class="btn-danger" onclick="removeRow(this)">X</button>
+                </div>
+                <div class="school-row">
+                    <input type="text" class="namaSekolah" value="Posyandu 2" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <button class="btn-danger" onclick="removeRow(this)">X</button>
+                </div>
+                <div class="school-row">
+                    <input type="text" class="namaSekolah" value="Posyandu Eka Tunggal" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <button class="btn-danger" onclick="removeRow(this)">X</button>
+                </div>
+            </div>
+            <button onclick="addSchoolRow()">+ Tambah Lokasi</button>
+
+            <h3>Menu Hari Ini</h3>
+            <textarea id="inputMenu" rows="5" oninput="generateReport()" placeholder="1. Nasi putih"></textarea>
+            <div class="info-textarea">*Tekan ENTER untuk melanjutkan penomoran otomatis. Tekan ENTER pada nomor kosong untuk berhenti.</div>
+
+            <div id="sectionGiziKecil">
+                <div class="gizi-header">
+                    <h3>Nilai Gizi Porsi Kecil</h3>
+                    <button class="btn-danger btn-sm" onclick="hapusGizi('sectionGiziKecil')">Hapus Tabel</button>
+                </div>
+                <div class="gizi-grid">
+                    <div><label>Energi</label><input type="text" id="kecilE" value="0" oninput="generateReport()"></div>
+                    <div><label>Protein</label><input type="text" id="kecilP" value="0" oninput="generateReport()"></div>
+                    <div><label>Lemak</label><input type="text" id="kecilL" value="0" oninput="generateReport()"></div>
+                    <div><label>Karbohidrat</label><input type="text" id="kecilKH" value="0" oninput="generateReport()"></div>
+                    <div><label>Serat</label><input type="text" id="kecilSerat" value="0" oninput="generateReport()"></div>
+                </div>
+            </div>
+
+            <div id="sectionGiziBalita">
+                <div class="gizi-header">
+                    <h3>Nilai Gizi Porsi Balita</h3>
+                    <button class="btn-danger btn-sm" onclick="hapusGizi('sectionGiziBalita')">Hapus Tabel</button>
+                </div>
+                <div class="gizi-grid">
+                    <div><label>Energi</label><input type="text" id="balitaE" value="0" oninput="generateReport()"></div>
+                    <div><label>Protein</label><input type="text" id="balitaP" value="0" oninput="generateReport()"></div>
+                    <div><label>Lemak</label><input type="text" id="balitaL" value="0" oninput="generateReport()"></div>
+                    <div><label>Karbohidrat</label><input type="text" id="balitaKH" value="0" oninput="generateReport()"></div>
+                    <div><label>Serat</label><input type="text" id="balitaSerat" value="0" oninput="generateReport()"></div>
+                </div>
+            </div>
+
+            <div id="sectionGiziBesar">
+                <div class="gizi-header">
+                    <h3>Nilai Gizi Porsi Besar</h3>
+                    <button class="btn-danger btn-sm" onclick="hapusGizi('sectionGiziBesar')">Hapus Tabel</button>
+                </div>
+                <div class="gizi-grid">
+                    <div><label>Energi</label><input type="text" id="besarE" value="0" oninput="generateReport()"></div>
+                    <div><label>Protein</label><input type="text" id="besarP" value="0" oninput="generateReport()"></div>
+                    <div><label>Lemak</label><input type="text" id="besarL" value="0" oninput="generateReport()"></div>
+                    <div><label>Karbohidrat</label><input type="text" id="besarKH" value="0" oninput="generateReport()"></div>
+                    <div><label>Serat</label><input type="text" id="besarSerat" value="0" oninput="generateReport()"></div>
+                </div>
+            </div>
+
+            <div id="sectionGiziBumil">
+                <div class="gizi-header">
+                    <h3>Nilai Gizi Porsi Bumil & Busui</h3>
+                    <button class="btn-danger btn-sm" onclick="hapusGizi('sectionGiziBumil')">Hapus Tabel</button>
+                </div>
+                <div class="gizi-grid">
+                    <div><label>Energi</label><input type="text" id="bumilE" value="0" oninput="generateReport()"></div>
+                    <div><label>Protein</label><input type="text" id="bumilP" value="0" oninput="generateReport()"></div>
+                    <div><label>Lemak</label><input type="text" id="bumilL" value="0" oninput="generateReport()"></div>
+                    <div><label>Karbohidrat</label><input type="text" id="bumilKH" value="0" oninput="generateReport()"></div>
+                    <div><label>Serat</label><input type="text" id="bumilSerat" value="0" oninput="generateReport()"></div>
+                </div>
+            </div>
+
+            <button class="btn-secondary" onclick="resetGizi()" style="margin-top: 15px;">Munculkan Semua Tabel Gizi</button>
+        </div>
+
+        <div class="output-section">
+            <label>Hasil Laporan (Otomatis Terupdate)</label>
+            <textarea id="hasilLaporan" readonly></textarea>
+            <button class="btn-primary" onclick="copyText()">Copy Laporan</button>
+        </div>
+    </div>
+
+    <script>
+        // Set tanggal default ke hari ini
+        document.getElementById('inputTanggal').valueAsDate = new Date();
+        
+        // Isi default menu hari ini dengan format awal penomoran
+        document.getElementById('inputMenu').value = "1. Nasi putih\n2. Ayam lada hitam\n3. Tempe katau\n4. Selada dan timun\n5. Pisang";
+
+        // Fitur Auto Numbering pada Textarea Menu
+        document.getElementById('inputMenu').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const cursorPos = this.selectionStart;
+                const textBeforeCursor = this.value.substring(0, cursorPos);
+                const textAfterCursor = this.value.substring(cursorPos);
+                
+                // Ambil baris terakhir sebelum kursor
+                const lines = textBeforeCursor.split('\n');
+                const lastLine = lines[lines.length - 1];
+                
+                // Cari kecocokan format nomor (contoh: "1. " atau "10. ")
+                const match = lastLine.match(/^(\d+)\.\s(.*)/);
+                const matchEmpty = lastLine.match(/^(\d+)\.\s*$/);
+                
+                if (matchEmpty) {
+                    // Jika menekan enter pada nomor yang kosong (ex: "6. "), hapus nomor tersebut (berhenti numbering)
+                    e.preventDefault();
+                    lines[lines.length - 1] = "";
+                    this.value = lines.join('\n') + textAfterCursor;
+                    this.selectionStart = this.selectionEnd = cursorPos - lastLine.length;
+                    generateReport();
+                } else if (match) {
+                    // Jika baris berisi teks, buat nomor berikutnya di baris baru
+                    e.preventDefault();
+                    const nextNumber = parseInt(match[1]) + 1;
+                    const insertText = `\n${nextNumber}. `;
+                    
+                    this.value = textBeforeCursor + insertText + textAfterCursor;
+                    this.selectionStart = this.selectionEnd = cursorPos + insertText.length;
+                    generateReport();
+                }
+            }
+        });
+
+        function formatTanggalIndo(dateString) {
+            if (!dateString) return "...";
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jum\'at', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const d = new Date(dateString);
+            return `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+        }
+
+        function addSchoolRow() {
+            const list = document.getElementById('schoolList');
+            const row = document.createElement('div');
+            row.className = 'school-row';
+            row.innerHTML = `
+                <input type="text" class="namaSekolah" placeholder="Nama Tempat" oninput="generateReport()">
+                <input type="number" class="porsiSekolah" placeholder="Jumlah" oninput="generateReport()">
+                <button class="btn-danger" onclick="removeRow(this)">X</button>
+            `;
+            list.appendChild(row);
+            generateReport();
+        }
+
+        function removeRow(btn) {
+            btn.parentElement.remove();
+            generateReport();
+        }
+
+        function hapusGizi(id) {
+            document.getElementById(id).style.display = 'none';
+            generateReport();
+        }
+
+        function resetGizi() {
+            document.getElementById('sectionGiziKecil').style.display = 'block';
+            document.getElementById('sectionGiziBalita').style.display = 'block';
+            document.getElementById('sectionGiziBesar').style.display = 'block';
+            document.getElementById('sectionGiziBumil').style.display = 'block';
+            generateReport();
+        }
+
+        function copyText() {
+            const textarea = document.getElementById("hasilLaporan");
+            textarea.select();
+            document.execCommand("copy");
+            alert("Laporan berhasil disalin!");
+        }
+
+        function generateReport() {
+            const tanggalStr = formatTanggalIndo(document.getElementById('inputTanggal').value);
+            const menu = document.getElementById('inputMenu').value;
+
+            // Proses Sekolah & Total
+            let totalPorsi = 0;
+            let daftarSekolahText = "";
+            const namaSekolahInputs = document.querySelectorAll('.namaSekolah');
+            const porsiSekolahInputs = document.querySelectorAll('.porsiSekolah');
+
+            for (let i = 0; i < namaSekolahInputs.length; i++) {
+                const nama = namaSekolahInputs[i].value;
+                const porsi = parseInt(porsiSekolahInputs[i].value) || 0;
+                totalPorsi += porsi;
+                if (nama.trim() !== "") {
+                    daftarSekolahText += `${i + 1}. ${nama} : ${porsi} orang\n`;
+                }
+            }
+
+            // Gizi Kecil
+            const kE = document.getElementById('kecilE').value;
+            const kP = document.getElementById('kecilP').value;
+            const kL = document.getElementById('kecilL').value;
+            const kKH = document.getElementById('kecilKH').value;
+            const kS = document.getElementById('kecilSerat').value;
+
+            // Gizi Balita
+            const balitaE = document.getElementById('balitaE').value;
+            const balitaP = document.getElementById('balitaP').value;
+            const balitaL = document.getElementById('balitaL').value;
+            const balitaKH = document.getElementById('balitaKH').value;
+            const balitaS = document.getElementById('balitaSerat').value;
+
+            // Gizi Besar
+            const bE = document.getElementById('besarE').value;
+            const bP = document.getElementById('besarP').value;
+            const bL = document.getElementById('besarL').value;
+            const bKH = document.getElementById('besarKH').value;
+            const bS = document.getElementById('besarSerat').value;
+
+            // Gizi Bumil
+            const bumilE = document.getElementById('bumilE').value;
+            const bumilP = document.getElementById('bumilP').value;
+            const bumilL = document.getElementById('bumilL').value;
+            const bumilKH = document.getElementById('bumilKH').value;
+            const bumilS = document.getElementById('bumilSerat').value;
+
+            // Format Menu Tanggal
+            let menuTanggal = "...";
+            if(document.getElementById('inputTanggal').value) {
+                const d = new Date(document.getElementById('inputTanggal').value);
+                const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                menuTanggal = `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+            }
+
+            // Merangkai Teks Nilai Gizi
+            let teksGizi = "Informasi Nilai Gizi\n";
+            let adaGizi = false;
+
+            if (document.getElementById('sectionGiziKecil').style.display !== 'none') {
+                teksGizi += `Porsi kecil :\nE : ${kE} Kkal\nP : ${kP} g\nL : ${kL} g\nKH : ${kKH} g\nSerat : ${kS} g\n\n`;
+                adaGizi = true;
+            }
+            if (document.getElementById('sectionGiziBalita').style.display !== 'none') {
+                teksGizi += `Porsi balita :\nE : ${balitaE} Kkal\nP : ${balitaP} g\nL : ${balitaL} g\nKH : ${balitaKH} g\nSerat : ${balitaS} g\n\n`;
+                adaGizi = true;
+            }
+            if (document.getElementById('sectionGiziBesar').style.display !== 'none') {
+                teksGizi += `Porsi besar :\nE : ${bE} Kkal\nP : ${bP} g\nL : ${bL} g\nKH : ${bKH} g\nSerat : ${bS} g\n\n`;
+                adaGizi = true;
+            }
+            if (document.getElementById('sectionGiziBumil').style.display !== 'none') {
+                teksGizi += `Porsi Bumil dan Busui :\nE : ${bumilE} Kkal\nP : ${bumilP} g\nL : ${bumilL} g\nKH : ${bumilKH} g\nSerat : ${bumilS} g\n\n`;
+                adaGizi = true;
+            }
+
+            // Menghilangkan enter lebih di akhir teks gizi
+            teksGizi = teksGizi.trim();
+
+            if (!adaGizi) {
+                teksGizi = "Informasi Nilai Gizi : (Tidak dilampirkan)";
+            }
+
+            // Format Keseluruhan Laporan
+            const template = `Kepada Yth. Pangdam XIX/TT.
+
+Tembusan:
+1. Kasdam XIX/TT
+2. Irdam XIX/TT
+3. Kapok Sahli Pangdam XIX/TT
+4. Asrendam XIX/TT
+5. Para Asisten Kasdam XIX/TT 
+
+Selamat Siang Bapak Panglima.
+
+Dengan Hormat,
+Mohon ijin melaporkan Kegiatan "Pendampingan Kepada Tim SPPG (Satuan Pelayanan Pemenuhan Gizi)" Pada kegiatan Pemberian MBG (Makan Bergizi Gratis) ${tanggalStr.toLowerCase()} di Wilayah Korem 031/ Wira Bima, Provinsi Riau Sebagai berikut :
+
+▪️ KODIM 0301/ PBR
+A. Jumlah Total : ${totalPorsi} Porsi
+B. Tempat : 
+
+1.   Wil SPPG Sukses Mulia Jl. Cipta Karya KM 2 , Kec. Tuah Madani Yayasan Amal Kolaborasi Indonesia
+${daftarSekolahText}
+● Jumlah Penerima Manfaat : ${totalPorsi} Orang
+
+●Tim Distribusi: 
+● Ramil 06 / Skj : 1 orang 
+● Tim SPPG : 3 orang
+
+Menu ${menuTanggal} : 
+${menu}
+
+${teksGizi}
+
+(Dokumentasi Terlampir)
+Demikian dilaporkan.`;
+
+            document.getElementById('hasilLaporan').value = template;
+        }
+
+        // Generate laporan saat halaman pertama dimuat
+        window.onload = generateReport;
+    </script>
+</body>
+</html>
