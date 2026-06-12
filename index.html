@@ -88,6 +88,27 @@
             margin-top: 2px;
             font-style: italic;
         }
+
+        /* --- KODE BARU UNTUK TAMPILAN HP (RESPONSIVE) --- */
+        @media screen and (max-width: 768px) {
+            body { padding: 10px; }
+            .container {
+                flex-direction: column; /* Mengubah kolom kiri-kanan jadi atas-bawah */
+            }
+            .school-row {
+                flex-wrap: wrap; /* Agar jika sempit, kolom jumlah porsi turun ke bawah */
+            }
+            .school-row input[type="text"] {
+                flex: 100%; /* Nama lokasi menjadi panjang penuh */
+                margin-bottom: 5px;
+            }
+            .gizi-grid {
+                grid-template-columns: repeat(2, 1fr); /* Gizi dari 5 kolom diubah jadi 2 menyamping */
+            }
+            textarea#hasilLaporan {
+                height: 400px; /* Tinggi hasil laporan disesuaikan untuk HP */
+            }
+        }
     </style>
 </head>
 <body>
@@ -95,6 +116,7 @@
     <h2>Generator Template Laporan SPPG</h2>
 
     <div class="container">
+        <!-- FORM INPUT -->
         <div class="form-section">
             <div class="form-group">
                 <label>Tanggal Kegiatan</label>
@@ -105,47 +127,47 @@
             <div id="schoolList">
                 <div class="school-row">
                     <input type="text" class="namaSekolah" value="SMK Pro-Skill" oninput="generateReport()">
-                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="284" oninput="generateReport()">
                     <button class="btn-danger" onclick="removeRow(this)">X</button>
                 </div>
                 <div class="school-row">
                     <input type="text" class="namaSekolah" value="SMA AL HUDA" oninput="generateReport()">
-                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="180" oninput="generateReport()">
                     <button class="btn-danger" onclick="removeRow(this)">X</button>
                 </div>
                 <div class="school-row">
                     <input type="text" class="namaSekolah" value="SMK AL HUDA" oninput="generateReport()">
-                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="104" oninput="generateReport()">
                     <button class="btn-danger" onclick="removeRow(this)">X</button>
                 </div>
                 <div class="school-row">
                     <input type="text" class="namaSekolah" value="SMK Muhammadiyah" oninput="generateReport()">
-                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="671" oninput="generateReport()">
                     <button class="btn-danger" onclick="removeRow(this)">X</button>
                 </div>
                 <div class="school-row">
                     <input type="text" class="namaSekolah" value="MTS AL HUDA" oninput="generateReport()">
-                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="265" oninput="generateReport()">
                     <button class="btn-danger" onclick="removeRow(this)">X</button>
                 </div>
                 <div class="school-row">
                     <input type="text" class="namaSekolah" value="SMP Muhammadiyah" oninput="generateReport()">
-                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="151" oninput="generateReport()">
                     <button class="btn-danger" onclick="removeRow(this)">X</button>
                 </div>
                 <div class="school-row">
                     <input type="text" class="namaSekolah" value="SD Muhammadiyah" oninput="generateReport()">
-                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="355" oninput="generateReport()">
                     <button class="btn-danger" onclick="removeRow(this)">X</button>
                 </div>
                 <div class="school-row">
                     <input type="text" class="namaSekolah" value="Posyandu Mutiara Bunda" oninput="generateReport()">
-                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="164" oninput="generateReport()">
                     <button class="btn-danger" onclick="removeRow(this)">X</button>
                 </div>
                 <div class="school-row">
                     <input type="text" class="namaSekolah" value="Posyandu 2" oninput="generateReport()">
-                    <input type="number" class="porsiSekolah" value="0" oninput="generateReport()">
+                    <input type="number" class="porsiSekolah" value="102" oninput="generateReport()">
                     <button class="btn-danger" onclick="removeRow(this)">X</button>
                 </div>
                 <div class="school-row">
@@ -160,6 +182,7 @@
             <textarea id="inputMenu" rows="5" oninput="generateReport()" placeholder="1. Nasi putih"></textarea>
             <div class="info-textarea">*Tekan ENTER untuk melanjutkan penomoran otomatis. Tekan ENTER pada nomor kosong untuk berhenti.</div>
 
+            <!-- SECTION NILAI GIZI -->
             <div id="sectionGiziKecil">
                 <div class="gizi-header">
                     <h3>Nilai Gizi Porsi Kecil</h3>
@@ -219,6 +242,7 @@
             <button class="btn-secondary" onclick="resetGizi()" style="margin-top: 15px;">Munculkan Semua Tabel Gizi</button>
         </div>
 
+        <!-- HASIL LAPORAN -->
         <div class="output-section">
             <label>Hasil Laporan (Otomatis Terupdate)</label>
             <textarea id="hasilLaporan" readonly></textarea>
